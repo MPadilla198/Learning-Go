@@ -15,6 +15,7 @@ func main() {
   // Make http request
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
+  // Change url to scrape different websites
   url := "https://www.golang.org"
 
   resp, _ := http.Get(url)
@@ -47,7 +48,12 @@ func parseHTML(resp *http.Response) {
 
       isAnchor := t.Data == "a"
       if isAnchor {
-        fmt.Println("We found a link!")
+        for _, a := range t.Attr {
+          if a.Key == "href" {
+            fmt.Println("We found a link:", a.Val)
+            break
+          }
+        }
       }
     }
   }
