@@ -5,23 +5,44 @@ package main
 
 import (
   "net/http"
-  //"io/ioutil"
   "golang.org/x/net/html"
   "fmt"
-  //"os"
   "strings"
 )
 
 func main() {
 
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-  // Make http request
-  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+  foundUrls := make(map[string]bool)
+  seedUrls := [3]string{"https://www.golang.org", "https://schier.co/blog/2015/04/26/a-simple-web-scraper-in-go.html", "https://godoc.org/golang.org/x/net/html#TokenType"}
 
-  // Change url to scrape different websites
-  url := "https://www.golang.org"
+  // channels
+  chUrls := make(chan string)
+  chFinished := make(chan bool)
 
-  Crawl(url)
+  // conurrently set off all seedUrls to be scraped
+  for _, url := range seedUrls {
+    go Crawl(url, chUrls, chFinished)
+  }
+
+  // Subscribe to both channels
+  for c := 0; c < len(seedUrls); {
+    select {
+    case url := <-chUrls:
+      foundUrls[url] = true
+    case <-chFinished:
+      c++
+    }
+  }
+
+  // Done scraping, now to print the results
+
+  fmt.Println("\nFound", len(foundUrls), "unique urls:\n")
+
+  for url, _ := range foundUrls {
+    fmt.Println(" - " + url)
+  }
+
+  close(chUrls)
 }
 
 // Function to find href attribute from a Token
@@ -35,16 +56,28 @@ func GetHref(t html.Token) (ok bool, href string) {
     }
   }
 
-  return
+  return false, ""
 }
 
-func Crawl(url string) {
+func Crawl(url string, ch chan string, chFinished chan bool) {
 
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
   // Parse HTML for Anchor Tags
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-  resp, _ := http.Get(url)
+  resp, err := http.Get(url)
+
+  defer func() {
+    // Notify that we're done after this function
+    chFinished <- true
+  }()
+
+  if err != nil {
+    fmt.Println("ERROR: Failed to crawl \"" + url + "\"")
+    return
+  }
+
+  defer resp.Body.Close()
 
   htmlTokenizer := html.NewTokenizer(resp.Body)
 
@@ -58,25 +91,23 @@ func Crawl(url string) {
     case tt == html.StartTagToken:
       t := htmlTokenizer.Token()
 
-      // Finds a tags in html
+      // checks if t is an <a> tags in html
       isAnchor := t.Data == "a"
       if !isAnchor {
         continue
       }
 
       // Get href attribute from t if present
-      ok, val := GetHref(t)
+      ok, url := GetHref(t)
       if !ok {
         continue
       }
 
       // Makes sure the url begins with "http"
-      hasProto := strings.Index(val, "http") == 0
+      hasProto := strings.Index(url, "http") == 0
       if hasProto {
-        fmt.Println("Found a link:", val)
+        ch <- url
       }
     }
   }
-
-  resp.Body.Close()
 }
