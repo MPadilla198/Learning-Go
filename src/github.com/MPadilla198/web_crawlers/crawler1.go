@@ -35,7 +35,6 @@ func main() {
   }
 
   // Done scraping, now to print the results
-
   fmt.Println("\nFound", len(foundUrls), "unique urls:\n")
 
   for url, _ := range foundUrls {
