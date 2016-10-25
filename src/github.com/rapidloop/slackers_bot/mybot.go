@@ -43,7 +43,7 @@ func main() {
 	}
 
 	// start a websocket-based Real Time API session
-	ws, _ := slack.SlackConnect(os.Args[1])
+	ws, id := slack.SlackConnect(os.Args[1])
 	fmt.Println("mybot ready, ^C exits")
 
 	for {
@@ -53,28 +53,35 @@ func main() {
 			log.Fatal(err)
 		}
 
-		//fmt.Println(m.Text)
-
 		// see if we're mentioned
-		if m.Type == "message" /*&& strings.HasPrefix(m.Text, "<@"+id+">")*/ {
-			// if so try to parse if
-			parts := strings.Fields(m.Text)
-			if len(parts) == 2 && parts[0] == "stock" {
-				// looks good, get the quote and reply with the result
-				go func(m slack.Message) {
-					m.Text = getQuote(parts[1])
+		if m.Type == "message" && strings.HasPrefix(m.Text, "<@"+id+">") {
+			go func() {
+				// if so try to parse if
+				parts := strings.Fields(m.Text)
+				if len(parts) == 3 && parts[1] == "stock" {
+					// looks good, get the quote and reply with the result
+					go func(m slack.Message) {
+						m.Text = getQuote(parts[2])
+						slack.PostMessage(ws, m)
+					}(m)
+					// NOTE: the Message object is copied, this is intentional
+				} else if len(parts) == 2 && parts[1] == "yeet" {
+					m.Text = fmt.Sprintf("yeet af")
 					slack.PostMessage(ws, m)
-				}(m)
-				// NOTE: the Message object is copied, this is intentional
-			} else if parts[0] == "yeet" {
-				m.Text = fmt.Sprintf("yeet af")
-				slack.PostMessage(ws, m)
-			}/* else {
-				// huh?
-				// wtf, why need this?
-				m.Text = fmt.Sprintf("sorry, that does not compute\n")
-				slack.PostMessage(ws, m)
-			}*/
+				} else if len(parts) == 1 && parts[0] == "<@"+id+">" {
+					// Makes copy of message to respond
+					func(m slack.Message) {
+						m.Text = "Yes?"
+						slack.PostMessage(ws, m)
+					}(m)
+				}
+				/* else {
+					// huh?
+					// wtf, why need this?
+					m.Text = fmt.Sprintf("sorry, that does not compute\n")
+					slack.PostMessage(ws, m)
+				}*/
+			}()
 		}
 	}
 }
