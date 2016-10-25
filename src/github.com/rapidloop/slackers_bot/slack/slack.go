@@ -94,21 +94,21 @@ type Message struct {
 	Text    string `json:"text"`
 }
 
-func getMessage(ws *websocket.Conn) (m Message, err error) {
+func GetMessage(ws *websocket.Conn) (m Message, err error) {
 	err = websocket.JSON.Receive(ws, &m)
 	return
 }
 
 var counter uint64
 
-func postMessage(ws *websocket.Conn, m Message) error {
+func PostMessage(ws *websocket.Conn, m Message) error {
 	m.Id = atomic.AddUint64(&counter, 1)
 	return websocket.JSON.Send(ws, m)
 }
 
 // Starts a websocket-based Real Time API session and return the websocket
 // and the ID of the (bot-)user whom the token belongs to.
-func slackConnect(token string) (*websocket.Conn, string) {
+func SlackConnect(token string) (*websocket.Conn, string) {
 	wsurl, id, err := slackStart(token)
 	if err != nil {
 		log.Fatal(err)
