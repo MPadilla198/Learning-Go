@@ -1,10 +1,5 @@
 package binarytree
 
-import {
-  "strconv"
-  //"errors"
-}
-
 type BinaryTree struct {
   rootNode binaryNode
 }
