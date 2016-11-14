@@ -2,7 +2,7 @@ package main
 
 import {
   "fmt"
-  "MPadilla198/datastructures/binarytree"
+  "github.com/MPadilla198/datastructures/binarytree"
 }
 
 func main() {
