@@ -4,7 +4,7 @@ type BinaryTree struct {
   rootNode binaryNode
 }
 
-func new(val int) BinaryTree {
+func New(val int) BinaryTree {
   
   var bTree BinaryTree
   bTree.rootNode.value = val
