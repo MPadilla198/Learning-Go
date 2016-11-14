@@ -1,141 +1,194 @@
 package binarytree
 
-import "strconv"
-
-type BinaryNode struct {
-  hasValue bool
-  value int
-  leftNode BinaryNode
-  rightNode BinaryNode
+import {
+  "strconv"
+  //"errors"
 }
 
-func (node *BinaryNode) Add(num int) err {
+type BinaryTree struct {
+  rootNode binaryNode
+}
+
+type binaryNode struct {
+  value int
+  leftNode, rightNode binaryNode
+}
+
+func (bTree *BinaryTree) Add(num int) {
   
-  if !hasValue {
-    node.value = num
-    node.hasValue = true
-    return nil
-  } 
+  return bTree.rootNode.add(num)
+}
+
+func (node *binaryNode) add(num int) {
   
   if num == node.value {
-    return nil
+    return
   } 
   
   if num < node.value {
-    return node.leftNode.Add(num)
+    if node.leftNode == nil {
+      node.leftNode = new(binaryNode)
+      
+      node.leftNode.value = num
+      
+      return
+    }
+      
+    return node.leftNode.add(num)
   }
   
   if num > node.value {
-    return node.rightNode.Add(num)
+    if node.rightNode == nil {
+      node.rightNode = new(binaryNode)
+      
+      node.rightNode.value = num
+      
+      return
+    }
+    
+    return node.rightNode.add(num)
   }
 }
 
-func (node *BinaryNode) Has(num int) bool {
+func (bTree *BinaryTree) Has(num int) bool {
   
-  if !hasValue {
-    return false
-  }
+  return bTree.rootNode.has(num)
+}
+
+func (node *binaryNode) has(num int) bool {
   
   if num == node.Value {
     return true
   }
   
   if num < node.value {
-    return node.leftNode.Has(num)
+    if node.leftNode = nil {
+      return false
+    }
+    
+    return node.leftNode.has(num)
   }
   
   if num > node.value {
-    return node.rightNode.Has(num)
+    if node.rightNode = nil {
+      return false
+    }
+    
+    return node.rightNode.has(num)
   }
 }
 
-func (node *BinaryNode) Size() int {
-  return node.fSize(0)
-}
-
-func (node *BinaryNode) fSize(cnt *int) int {
+func (bTree *BinaryTree) Size() int {
   
-  if !hasValue {
-    return cnt
-  }
+  return bTree.rootNode.size(0)
+}
+
+func (node *binaryNode) size(cnt *int) int {
   
   cnt++
   
-  node.leftNode.fSize(cnt)
-  node.rightNode.fSize(cnt)
+  if node.leftNode != nil {
+    node.leftNode.size(cnt)
+  }
+  
+  if node.rightNode != nil {
+    node.rightNode.size(cnt)
+  }
   
   return cnt
 }
 
-func (node *BinaryNode) TreeDepth() int {
-  return node.fTreeDepth(0)
+func (bTree *BinaryTree) TreeDepth() int {
+  
+  return bTree.rootNode.treeDepth(0)
 }
 
-func (node *BinaryNode) fTreeDepth(currentDepth int) int {
-  
-  if !hasValue {
-    return currentDepth
-  }
+func (node *binaryNode) treeDepth(currentDepth int) int {
   
   currentDepth++
   
-  leftDepth = node.leftNode.fTreeDepth(currentDepth)
-  rightDepth = node.rightNode.fTreeDepth(currentDepth)
-  
-  return (leftDepth>rightDepth) ? leftDepth : rightDepth
-}
-
-func (node *BinaryNode) PreorderTraversal() string {
-  return node.fPreorderTraversal("")
-}
-
-func (node *BinaryNode) fPreorderTraversal(path *string) string {
-  
-  if !node.hasValue {
-    return path
+  if node.leftNode != nil {
+    leftDepth = node.leftNode.treeDepth(currentDepth)
   }
   
-  path = path + strconv.FormatInt(int64(node.value), 10)
+  if node.rightNode != nil {
+    rightDepth = node.rightNode.treeDepth(currentDepth)
+  }
   
-  node.leftNode.fPreorderTraversal(path)
-  node.rightNode.fPreorderTraversal(path)
+  return currentDepth + (leftDepth>rightDepth) ? leftDepth : rightDepth
+}
+
+/*********************************************
+//
+// Traversal Functions
+//
+*********************************************/
+
+func (bTree *BinaryTree) PreorderTraversal() []int {
+  
+  var arr [bTree.Size()]int
+  
+  return bTree.rootNode.preorderTraversal(arr, 0)
+}
+
+func (node *binaryNode) preorderTraversal(path *[]int, cnt *int) []int {
+  
+  path[cnt] = node.value
+  cnt++
+  
+  if node.leftNode != nil {
+    node.leftNode.preorderTraversal(path, cnt)
+  }
+  
+  if node.rightNode != nil {
+    node.rightNode.preorderTraversal(path, cnt)
+  }
   
   return path
 }
 
-func (node *BinaryNode) InorderTraversal() string {
-  return node.fInorderTraversal("")
+func (bTree *BinaryTree) InorderTraversal() []int {
+  
+  var arr [bTree.Size()]int
+  
+  return bTree.rootNode.inorderTraversal(arr, 0)
 }
 
-func (node *BinaryNode) fInorderTraversal(path *string) string {
+func (node *binaryNode) inorderTraversal(path *[]int, cnt *int) []int {
   
-  if !node.hasValue {
-    return path
+  if node.leftNode != nil {
+    node.leftNode.inorderTraversal(path)
   }
   
-  node.leftNode.fInorderTraversal(path)
+  path[cnt] = node.value
+  cnt++
   
-  path = path + strconv.FormatInt(int64(node.value), 10)
-  
-  node.rightNode.fInorderTraversal(path)
+  if node.rightNode != nil {
+    node.rightNode.inorderTraversal(path)
+  }
   
   return path
 }
 
-func (node *BinaryNode) PostorderTraversal() string {
-  return node.fPostorderTraversal("")
+func (bTree *BinaryTree) PostorderTraversal() []int {
+  
+  var arr [bTree.Size()]int
+  
+  return bTree.rootNode.postorderTraversal(arr, 0)
 }
 
-func (node *BinaryNode) fPostorderTraversal(path *string) string {
+func (node *binaryNode) postorderTraversal(path *[]int, cnt *int) []int {
   
-  if !node.hasValue {
-    return path
+  if node.leftNode != nil {
+    node.leftNode.postorderTraversal(path)
   }
   
-  node.leftNode.fPostorderTraversal(path)
-  node.rightNode.fPostorderTraversal(path)
+  if node.rightNode != nil {
+    node.rightNode.postorderTraversal(path)
+  }
   
-  path = path + strconvInt(int64(node.value), 10)
+  path[cnt] = node.value
+  cnt++
   
   return path
 }
