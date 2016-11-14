@@ -4,6 +4,14 @@ type BinaryTree struct {
   rootNode binaryNode
 }
 
+func new(val int) BinaryTree {
+  
+  var bTree BinaryTree
+  bTree.rootNode.value = val
+  
+  return bTree
+}
+
 type binaryNode struct {
   value int
   leftNode, rightNode binaryNode
