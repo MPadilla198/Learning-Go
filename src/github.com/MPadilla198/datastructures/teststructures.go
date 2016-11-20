@@ -1,16 +1,16 @@
 package main
 
-import {
+import (
   "fmt"
   "github.com/MPadilla198/datastructures/binarytree"
-}
+)
 
 func main() {
   testBinaryTree()
 }
 
 func testBinaryTree() {
-  
+
   bTree := binarytree.New(42)
   bTree.Add(38)
   bTree.Add(69)
@@ -27,14 +27,14 @@ func testBinaryTree() {
   bTree.Add(24)
   bTree.Add(15)
   bTree.Add(20)
-  
+
   fmt.Printf("Tree size:" + bTree.Size())
   fmt.Printf("Tree depth:" + bTree.TreeDepth())
-  
+
   fmt.Printf("Pre-Order Traversal:" + bTree.PreorderTraversal())
   fmt.Printf("In-Order Traversal:" + bTree.InorderTraversal())
   fmt.Printf("Post-Order Traversal:" + bTree.PostorderTraversal())
-  
+
   fmt.Printf("Has 34?" + bTree.Has(34))
   fmt.Printf("Has 13?" + bTree.Has(13))
 }
