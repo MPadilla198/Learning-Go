@@ -2,7 +2,8 @@ package main
 
 import (
   "fmt"
-  "github.com/MPadilla198/datastructures/binarytree"
+  "strconv"
+  "github.com/MPadilla198/datastructures/collections"
 )
 
 func main() {
@@ -11,7 +12,7 @@ func main() {
 
 func testBinaryTree() {
 
-  bTree := binarytree.New(42)
+  bTree := collections.NewBinaryTree(42)
   bTree.Add(38)
   bTree.Add(69)
   bTree.Add(99)
@@ -28,13 +29,27 @@ func testBinaryTree() {
   bTree.Add(15)
   bTree.Add(20)
 
-  fmt.Printf("Tree size:" + bTree.Size())
-  fmt.Printf("Tree depth:" + bTree.TreeDepth())
+  fmt.Println("Tree size:" + strconv.Itoa(bTree.Size()))
+  fmt.Println("Tree depth:" + strconv.Itoa(bTree.TreeDepth()))
 
-  fmt.Printf("Pre-Order Traversal:" + bTree.PreorderTraversal())
-  fmt.Printf("In-Order Traversal:" + bTree.InorderTraversal())
-  fmt.Printf("Post-Order Traversal:" + bTree.PostorderTraversal())
+  fmt.Print("Pre-Order Traversal: ")
+  for _, num := range bTree.PreorderTraversal() {
+    fmt.Print(strconv.Itoa(num) + " ")
+  }
+  fmt.Println(" ")
 
-  fmt.Printf("Has 34?" + bTree.Has(34))
-  fmt.Printf("Has 13?" + bTree.Has(13))
+  fmt.Print("In-Order Traversal: ")
+  for _, num := range bTree.InorderTraversal() {
+    fmt.Print(strconv.Itoa(num) + " ")
+  }
+  fmt.Println(" ")
+
+  fmt.Print("Post-Order Traversal: ")
+  for _, num := range bTree.PostorderTraversal() {
+    fmt.Print(strconv.Itoa(num) + " ")
+  }
+  fmt.Println(" ")
+
+  fmt.Println("Has 34? " + strconv.FormatBool(bTree.Has(34)))
+  fmt.Println("Has 13? " + strconv.FormatBool(bTree.Has(13)))
 }
