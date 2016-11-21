@@ -102,27 +102,26 @@ func (node *binaryNode) size(cnt int) int {
 
 func (bTree *BinaryTree) TreeDepth() int {
 
-  return bTree.rootNode.treeDepth(0)
+  return bTree.rootNode.treeDepth()
 }
 
-func (node *binaryNode) treeDepth(currentDepth int) int {
+func (node *binaryNode) treeDepth() int {
+
   var leftDepth, rightDepth int
 
-  currentDepth++
-
   if node.leftNode != nil {
-    leftDepth = node.leftNode.treeDepth(currentDepth)
+    leftDepth = node.leftNode.treeDepth()
   }
 
   if node.rightNode != nil {
-    rightDepth = node.rightNode.treeDepth(currentDepth)
+    rightDepth = node.rightNode.treeDepth()
   }
 
   if leftDepth < rightDepth {
-    return currentDepth + rightDepth
+    return rightDepth + 1
   }
 
-  return currentDepth + leftDepth
+  return leftDepth + 1
 }
 
 /*********************************************
@@ -141,20 +140,18 @@ func (bTree *BinaryTree) PreorderTraversal() []int {
 
 func (node *binaryNode) preorderTraversal(path []int, cnt int) ([]int, int) {
 
-  var leftCnt, rightCnt int
-
   path[cnt] = node.value
   cnt++
 
   if node.leftNode != nil {
-    path, leftCnt = node.leftNode.preorderTraversal(path, cnt)
+    path, cnt = node.leftNode.preorderTraversal(path, cnt)
   }
 
   if node.rightNode != nil {
-    path, rightCnt = node.rightNode.preorderTraversal(path, cnt)
+    path, cnt = node.rightNode.preorderTraversal(path, cnt)
   }
 
-  return path, cnt + leftCnt + rightCnt
+  return path, cnt
 }
 
 func (bTree *BinaryTree) InorderTraversal() []int {
@@ -167,20 +164,18 @@ func (bTree *BinaryTree) InorderTraversal() []int {
 
 func (node *binaryNode) inorderTraversal(path []int, cnt int) ([]int, int) {
 
-  var leftCnt, rightCnt int
-
   if node.leftNode != nil {
-    path, leftCnt = node.leftNode.inorderTraversal(path, cnt)
+    path, cnt = node.leftNode.inorderTraversal(path, cnt)
   }
 
   path[cnt] = node.value
   cnt++
 
   if node.rightNode != nil {
-    path, rightCnt = node.rightNode.inorderTraversal(path, cnt)
+    path, cnt = node.rightNode.inorderTraversal(path, cnt)
   }
 
-  return path, cnt + leftCnt + rightCnt
+  return path, cnt
 }
 
 func (bTree *BinaryTree) PostorderTraversal() []int {
@@ -193,18 +188,16 @@ func (bTree *BinaryTree) PostorderTraversal() []int {
 
 func (node *binaryNode) postorderTraversal(path []int, cnt int) ([]int, int) {
 
-  var leftCnt, rightCnt int
-
   if node.leftNode != nil {
-    path, leftCnt = node.leftNode.postorderTraversal(path, cnt)
+    path, cnt = node.leftNode.postorderTraversal(path, cnt)
   }
 
   if node.rightNode != nil {
-    path, rightCnt = node.rightNode.postorderTraversal(path, cnt)
+    path, cnt = node.rightNode.postorderTraversal(path, cnt)
   }
 
   path[cnt] = node.value
   cnt++
 
-  return path, cnt + leftCnt + rightCnt
+  return path, cnt
 }
