@@ -1,12 +1,12 @@
 package collections
 
-type LinkedList struct {
+type linkedList struct {
   rootNode *listNode
 }
 
-func NewLinkedList(num int) LinkedList {
+func NewLinkedList(num int) linkedList {
 
-  var list LinkedList
+  var list linkedList
   list.rootNode.value = num
 
   return list
@@ -17,7 +17,7 @@ type listNode struct {
   nextNode *listNode
 }
 
-func (list *LinkedList) AddToTail(num int) {
+func (list *linkedList) AddToTail(num int) {
 
   list.rootNode.addToTail(num)
 }
@@ -34,7 +34,7 @@ func (node *listNode) addToTail(num int) {
   node.nextNode.addToTail(num)
 }
 
-func (list *LinkedList) AddToHead(num int) {
+func (list *linkedList) AddToHead(num int) {
 
   newRootNode := new(listNode)
   newRootNode.value = num
