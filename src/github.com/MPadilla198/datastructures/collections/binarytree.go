@@ -6,10 +6,11 @@ type binaryTree struct {
 
 func NewBinaryTree(val int) binaryTree {
 
-	var bTree binaryTree
-	bTree.rootNode.value = val
-
-	return bTree
+	return &binaryTree{
+		rootnode: &binaryNode{
+			value: val,
+		},
+	}
 }
 
 type binaryNode struct {
@@ -30,9 +31,9 @@ func (node *binaryNode) add(num int) {
 
 	if num < node.value {
 		if node.leftNode == nil {
-			node.leftNode = new(binaryNode)
-
-			node.leftNode.value = num
+			node.leftNode := &binaryNode{
+				value: num,
+			}
 
 			return
 		}
@@ -42,7 +43,9 @@ func (node *binaryNode) add(num int) {
 
 	if num > node.value {
 		if node.rightNode == nil {
-			node.rightNode = new(binaryNode)
+			node.rightNode *= &binaryNode{
+				value: num,
+			}
 
 			node.rightNode.value = num
 
