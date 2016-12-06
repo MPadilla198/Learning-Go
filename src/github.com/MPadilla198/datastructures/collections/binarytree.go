@@ -56,69 +56,6 @@ func (node *binaryNode) add(num int) {
 	}
 }
 
-func (bTree *binaryTree) Remove(val int) bool {
-
-	return bTree.rootNode.remove(val)
-}
-
-func (node *binaryNode) remove(val int) bool {
-
-	if node.value != val {
-
-		if node.leftNode != nil {
-
-			if node.rightNode != nil {
-
-				return node.leftNode.remove(val) || node.rightNode.remove(val)
-			}
-
-			return node.leftNode.remove(val)
-		}
-
-		if node.rightNode != nil {
-
-			return node.rightNode.remove(val)
-		}
-
-		return false
-	}
-
-	if node.leftNode == nil && node.rightNode == nil {
-
-		node = new(binaryNode)
-	} else if node.leftNode == nil {
-
-		node = node.rightNode
-	} else if node.rightNode == nil {
-
-		node = node.leftNode
-	} else {
-
-		node.value = node.rightNode.findLowestNode()
-	}
-
-	return true
-}
-
-func (node *binaryNode) findLowestNode() int {
-
-	if node.leftNode == nil && node.rightNode == nil {
-
-		var val = node.value
-
-		node = new(binaryNode)
-
-		return val
-	}
-
-	if node.leftNode != nil {
-
-		return node.leftNode.findLowestNode()
-	}
-
-	return node.rightNode.findLowestNode()
-}
-
 func (bTree *binaryTree) Has(num int) bool {
 
 	return bTree.rootNode.has(num)
