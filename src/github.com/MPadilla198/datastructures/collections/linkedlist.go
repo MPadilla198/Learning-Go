@@ -72,16 +72,6 @@ func (node *listNode) addAfter(num int) {
 	}
 }
 
-func (list *linkedList) Empty() bool {
-	
-	if list.rootNode == nil {
-		
-		return true
-	}
-	
-	return false
-}
-
 func (list *linkedList) Has(num int) bool {
 	
 	if list.rootNode == nil {
@@ -123,6 +113,16 @@ func (node *listNode) indexOf(val, cnt int) int {
 	}
 	
 	return node.indexOf(val, cnt + 1)
+}
+
+func (list *linkedList) IsEmpty() bool {
+	
+	if list.rootNode == nil {
+		
+		return true
+	}
+	
+	return false
 }
 
 func (list *linkedList) Peek() int {
