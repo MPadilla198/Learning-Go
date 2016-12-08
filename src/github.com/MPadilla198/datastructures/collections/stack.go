@@ -9,7 +9,7 @@ func (stack *Stack) Clear() {
 	stack.list = new(linkedList)
 }
 
-func (stack *Stack) Empty() bool {
+func (stack *Stack) IsEmpty() bool {
 	
 	return stack.list.Empty()
 }
