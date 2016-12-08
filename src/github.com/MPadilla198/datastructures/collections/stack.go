@@ -4,6 +4,11 @@ type Stack struct {
   list *linkedList
 }
 
+func (stack *Stack) Clear() {
+	
+	stack.list = new(linkedList)
+}
+
 func (stack *Stack) Empty() bool {
 	
 	return stack.list.Empty()
