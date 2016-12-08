@@ -105,14 +105,34 @@ func (node *listNode) has(num int) bool {
 	return node.nextNode.has(num)
 }
 
-func (list *linkedList) Peek() int, bool {
+func (list *linkedList) IndexOf(val int) int {
+	
+	return list.rootNode.IndexOf(val, 0)
+}
+
+func (node *listNode) indexOf(val, cnt int) int {
+	
+	if node.value == val {
+		
+		return cnt
+	}
+	
+	if node.nextNode == nil {
+		
+		return -1
+	}
+	
+	return node.indexOf(val, cnt + 1)
+}
+
+func (list *linkedList) Peek() int {
 	
 	if list.rootNode == nil {
 		
-		return 0, false
+		return 0
 	}
 	
-	return list.rootNode.value, true
+	return list.rootNode.value
 }
 
 func (list *linkedList) Remove(num int) bool {
