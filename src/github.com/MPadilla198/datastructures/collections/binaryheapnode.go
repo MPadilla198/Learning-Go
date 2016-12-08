@@ -1,6 +1,6 @@
 package collections
 
-type BinaryHeapNode struct {
+type binaryHeapNode struct {
 	value int
 	rightNode, leftNode *BinaryHeapNode
 }
