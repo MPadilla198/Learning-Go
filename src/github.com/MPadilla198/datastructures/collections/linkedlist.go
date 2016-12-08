@@ -72,6 +72,49 @@ func (node *listNode) addAfter(num int) {
 	}
 }
 
+func (list *linkedList) Empty() bool {
+	
+	if list.rootNode == nil {
+		
+		return true
+	}
+	
+	return false
+}
+
+func (list *linkedList) Has(num int) bool {
+	
+	if list.rootNode == nil {
+		
+		return false
+	}
+	
+	return list.rootNode.has(num)
+}
+
+func (node *listNode) has(num int) bool {
+	
+	if node.value == num {
+		return true
+	}
+	
+	if node.nextNode == nil {
+		return false
+	}
+	
+	return node.nextNode.has(num)
+}
+
+func (list *linkedList) Peek() int, bool {
+	
+	if list.rootNode == nil {
+		
+		return 0, false
+	}
+	
+	return list.rootNode.value, true
+}
+
 func (list *linkedList) Remove(num int) bool {
 	
 	wasRemoved, _ := list.rootNode.remove(num)
@@ -97,4 +140,24 @@ func (node *listNode) remove(num int) bool, bool {
 	}
 	
 	return wasRemoved, false
+}
+
+func (list *linkedList) Size() int {
+	
+	if list.rootNode == nil {
+		
+		return 0
+	}
+	
+	return list.rootNode.size()
+}
+
+func (node *listNode) size() int {
+	
+	if node.nextNode == nil {
+		
+		return 1
+	}
+	
+	return node.nextNode.size() + 1
 }
