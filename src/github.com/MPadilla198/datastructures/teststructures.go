@@ -53,27 +53,4 @@ func testBinaryTree() {
 
 	fmt.Println("Has 34? " + strconv.FormatBool(bTree.Has(34)))
 	fmt.Println("Has 13? " + strconv.FormatBool(bTree.Has(13)))
-
-	fmt.Println("Remove 1")
-	var wasRemoved = bTree.Remove(1)
-
-	if wasRemoved {
-		fmt.Print("Pre-Order Traversal: ")
-		for _, num := range bTree.PreorderTraversal() {
-			fmt.Print(strconv.Itoa(num) + " ")
-		}
-		fmt.Println(" ")
-
-		fmt.Print("In-Order Traversal: ")
-		for _, num := range bTree.InorderTraversal() {
-			fmt.Print(strconv.Itoa(num) + " ")
-		}
-		fmt.Println(" ")
-
-		fmt.Print("Post-Order Traversal: ")
-		for _, num := range bTree.PostorderTraversal() {
-			fmt.Print(strconv.Itoa(num) + " ")
-		}
-		fmt.Println(" ")
-	}
 }

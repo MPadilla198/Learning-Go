@@ -1,13 +1,13 @@
 package collections
 
 type binaryTree struct {
-	rootNode binaryNode
+	rootNode *binaryNode
 }
 
-func NewBinaryTree(val int) binaryTree {
+func NewBinaryTree(val int) *binaryTree {
 
 	return &binaryTree{
-		rootnode: &binaryNode{
+		rootNode: &binaryNode{
 			value: val,
 		},
 	}
@@ -26,12 +26,15 @@ func (bTree *binaryTree) Add(num int) {
 func (node *binaryNode) add(num int) {
 
 	if num == node.value {
+
 		return
 	}
 
 	if num < node.value {
+
 		if node.leftNode == nil {
-			node.leftNode := &binaryNode{
+
+			node.leftNode = &binaryNode{
 				value: num,
 			}
 
@@ -43,7 +46,7 @@ func (node *binaryNode) add(num int) {
 
 	if num > node.value {
 		if node.rightNode == nil {
-			node.rightNode *= &binaryNode{
+			node.rightNode = &binaryNode{
 				value: num,
 			}
 
